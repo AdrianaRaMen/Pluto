@@ -1,4 +1,14 @@
 # Pluto
 Finanzas personales
 ## Contexto
-lalalala
+Tema del proyecto: Finanzas personales.
+El proyecto consiste en desarrollar Pluto, un programa de finanzas personales que permitirá a los usuarios registrar sus gastos y administrar sus ingresos para distribuir su dinero de una manera más organizada y consciente. El proyecto surge de la necesidad de contar con herramientas que faciliten el control de las finanzas personales, ya que una parte importante de la población enfrenta dificultades para administrar sus recursos. De acuerdo con la Comisión Nacional para la Protección y Defensa de los Usuarios de Servicios Financieros (CONDUSEF), el 45.9 % de la población señaló que casi nunca o nunca le sobra dinero al final del mes, mientras que el 34.6 % manifestó tener poca o ninguna capacidad para hacer frente a gastos inesperados. Asimismo, el 56.1 % indicó que poco o nada asegura su futuro financiero y el 52.7 % expresó tener poca o ninguna tranquilidad respecto a la suficiencia de sus ahorros (CONDUSEF, s. f.).
+En este contexto, Pluto busca ser una herramienta que facilite el registro y la organización de los movimientos financieros del usuario, desde sus ingresos hasta sus gastos en categorías como alimentación, vivienda, transporte, salud, educación y entretenimiento. A partir de esta información, el programa podrá mostrar los gastos realizados y generar reportes que permitan identificar las categorías en las que se destina una mayor cantidad de dinero. De esta manera, el usuario podrá reconocer sus principales patrones de gasto y tomar decisiones más informadas sobre la administración de sus recursos.
+Además, Pluto incluirá metas de ahorro que permitirán al usuario establecer objetivos financieros, conocer su avance y calcular cuánto dinero necesita para alcanzarlos. Como parte de esta función, el programa podrá fomentar una mayor conciencia sobre la importancia del ahorro y, posteriormente, introducir conceptos relacionados con la inversión. Esto resulta relevante considerando que el bienestar financiero en México obtuvo una puntuación de 52.8 puntos sobre 100, de acuerdo con el índice utilizado por la CONDUSEF (CONDUSEF, s. f.).
+Este proyecto es interesante porque utiliza Python para abordar una situación de la vida cotidiana y convertir la administración de las finanzas personales en un proceso más sencillo y comprensible. Al proporcionar información organizada sobre los ingresos, gastos, ahorro y metas financieras, Pluto busca disminuir la frustración que puede generar la falta de control sobre el dinero y promover una mayor conciencia sobre las decisiones financieras.
+Finalmente, el desarrollo de Pluto permitirá aplicar de manera práctica los conocimientos adquiridos durante el curso. De esta manera, los diferentes conceptos de programación se integrarán para resolver un problema concreto y desarrollar un programa que sea funcional.
+
+Referencia
+Comisión Nacional para la Protección y Defensa de los Usuarios de Servicios Financieros. (s. f.). Bienestar o salud financiera. Gobierno de México. https://www.condusef.gob.mx/?p=contenido&idc=2448&idcat=1
+
+## Algoritmo
