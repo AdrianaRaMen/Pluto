@@ -12,3 +12,4 @@ Referencia
 Comisión Nacional para la Protección y Defensa de los Usuarios de Servicios Financieros. (s. f.). Bienestar o salud financiera. Gobierno de México. https://www.condusef.gob.mx/?p=contenido&idc=2448&idcat=1
 
 ## Algoritmo
+Viene dentro del archivo "Algoritmo del proyecto_Adriana Mendoza Ramírez_A01716899.pdf" adjunto. 
