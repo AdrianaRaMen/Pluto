@@ -1,0 +1,4 @@
+Por favor revisar nuevamente "Avance 1: selección de proyecto", la parte del algoritmo. Viene corregido en el archivo llamado "Algoritmo del proyecto_corregido" con las observaciones indicadas en la retroalimentación de la carátula de competencias. ¡Gracias!
+
+También por favor revisar el avance 2, sí hay un commit que se encuentra aquí: https://github.com/AdrianaRaMen/Pluto/commit/b849c574125e2ad1bcb8b5ac7a346723f3423c9f
+¡Gracias!
