@@ -5,6 +5,9 @@ El programa permite registrar un ingreso y un gasto, y después elegir
 qué información quiere ver el usuario.
 """
 dinero_total = 0
+lista_ingresos = []
+lista_gastos = []
+lista_categoria_gastos = []
 
 def registrar_ingreso():
     global dinero_total
@@ -12,6 +15,9 @@ def registrar_ingreso():
     ingreso = float(input("Dinero que se recibió: $"))
     if validar_cantidad(ingreso):
         origen = input("Fuente de la que se obtuvo ese dinero: ")
+
+        # Registrar ingreso
+        lista_ingresos.append(ingreso)
         dinero_total += ingreso
         return ingreso, origen
     else:
@@ -26,6 +32,11 @@ def registrar_gasto():
     if validar_cantidad(gasto):
         categoria = input("Categoría (comida, transporte, escuela, salud, entretenimiento): ")
         categoria = validar_categoria(categoria)
+
+        # Registrar gasto
+        lista_gastos.append(gasto)
+        lista_categoria_gastos.append(categoria)
+
         dinero_total -= gasto
         return gasto, categoria
            
@@ -46,10 +57,12 @@ def mostrar_movimiento(cantidad, origen):
     print()
 
 
-def mostrar_resultados(total_ingresos, total_gastos, dinero_disponible):
-    print("Total de ingresos: $", total_ingresos)
-    print("Total de gastos: $", total_gastos)
-    print("Dinero disponible: $", dinero_disponible)
+def mostrar_historial():
+    print("Total de ingresos: ", lista_ingresos)
+    print("Total de gastos: ", lista_gastos)
+    print("Categorías de los gastos: ", lista_categoria_gastos)
+    print("Dinero disponible: $", dinero_total)
+    print()
 
 
 # Funciones del Avance 4
@@ -94,7 +107,8 @@ def mostrar_menu():
     print("******* Menú *******")
     print("1. Registrar ingreso")
     print("2. Registrar gasto")
-    print("3. Salir")
+    print("3. Ver historial de movimientos")
+    print("4. Salir")
     print()
     
 
@@ -111,6 +125,9 @@ while (inicio):
     mostrar_menu()
     opcion = int(input("Elige una opción: "))
 
+    # Salto de linea
+    print()
+
     if opcion == 1:
         print("******* Ingreso *******")
         ingreso, origen = registrar_ingreso()
@@ -120,8 +137,12 @@ while (inicio):
         print("******* Gasto *******")
         gasto, categoria = registrar_gasto()
         mostrar_movimiento(gasto, categoria)
-        
+
     elif opcion == 3:
+        print("******* Historial de movimientos *******")
+        mostrar_historial()
+        
+    elif opcion == 4:
         print("Saliendo del programa...")
         inicio = False
     else:
