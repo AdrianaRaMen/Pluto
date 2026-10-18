@@ -30,7 +30,7 @@ def registrar_gasto():
 
     gasto = float(input("Dinero que se gastó: $"))
     if validar_cantidad(gasto):
-        categoria = input("Categoría (comida, transporte, escuela, salud, entretenimiento): ")
+        categoria = input("Categoría (comida, transporte, escuela, salud, entretenimiento, vivienda, gustos): ")
         categoria = validar_categoria(categoria)
 
         # Registrar gasto
@@ -87,6 +87,10 @@ def validar_categoria(categoria):
     elif categoria == "salud":
         return categoria
     elif categoria == "entretenimiento":
+        return categoria
+    elif categoria == "vivienda":
+        return categoria
+    elif categoria == "gustos":
         return categoria
     else:
         print("Esa categoría no está en la lista, se guardará como otros.")
