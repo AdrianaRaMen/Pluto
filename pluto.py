@@ -1,3 +1,6 @@
+import pandas as pd
+import os
+
 """Proyecto Pluto.
 
 Herramienta de organización de finanzas personales.
@@ -8,6 +11,9 @@ dinero_total = 0
 lista_ingresos = []
 lista_gastos = []
 lista_categoria_gastos = []
+matriz = [ 
+    lista_gastos, lista_categoria_gastos
+]
 
 def registrar_ingreso():
     global dinero_total
@@ -34,8 +40,8 @@ def registrar_gasto():
         categoria = validar_categoria(categoria)
 
         # Registrar gasto
-        lista_gastos.append(gasto)
-        lista_categoria_gastos.append(categoria)
+        matriz[0].append(gasto)
+        matriz[1].append(categoria)
 
         dinero_total -= gasto
         return gasto, categoria
@@ -59,8 +65,8 @@ def mostrar_movimiento(cantidad, origen):
 
 def mostrar_historial():
     print("Total de ingresos: ", lista_ingresos)
-    print("Total de gastos: ", lista_gastos)
-    print("Categorías de los gastos: ", lista_categoria_gastos)
+    print("Total de gastos: ", matriz[0])
+    print("Categorías de los gastos: ", matriz[1])
     print("Dinero disponible: $", dinero_total)
     print()
 
@@ -89,9 +95,9 @@ def validar_categoria(categoria):
     elif categoria == "entretenimiento":
         return categoria
     elif categoria == "vivienda":
-        return categoria
+            return categoria
     elif categoria == "gustos":
-        return categoria
+            return categoria
     else:
         print("Esa categoría no está en la lista, se guardará como otros.")
         return "otros"
@@ -114,7 +120,40 @@ def mostrar_menu():
     print("3. Ver historial de movimientos")
     print("4. Salir")
     print()
-    
+
+def guardar_datos():
+    dfGastos = pd.DataFrame({
+        "Gastos": matriz[0],
+        "Categoría Gastos": matriz[1]
+    })
+
+    dfIngresos = pd.DataFrame({
+            "Ingresos": lista_ingresos,
+        })
+
+    print(dfGastos)
+    print(dfIngresos)
+
+    dfGastos.to_csv("historialGastos.csv", index=False)
+    dfIngresos.to_csv("historialIngresos.csv", index=False)
+
+
+def cargar_datos():
+    global lista_ingresos
+    global matriz
+
+    if os.path.exists("historialGastos.csv") and os.path.exists("historialIngresos.csv"):
+        dfGastos = pd.read_csv("historialGastos.csv", sep=",")
+        dfIngresos = pd.read_csv("historialIngresos.csv", sep=",")
+        print(dfGastos)
+        print(dfIngresos)
+
+        lista_ingresos = dfIngresos["Ingresos"].to_list()
+        matriz[1] = dfGastos["Categoría Gastos"].to_list()
+        matriz[0] = dfGastos["Gastos"].to_list()
+    else:
+        print("No se encontraron registros anteriores")
+        print()
 
 # *******************************************************************
 # Inicio
@@ -125,7 +164,11 @@ print("Bienvenido a Pluto, tu herramienta de organización de finanzas "
 #Variable para que el programa se repita
 inicio = True
 # Menú: el usuario elige una opción y el programa decide qué hacer
+
+cargar_datos()
+
 while (inicio):
+    #Función para guardar los datos ingresados con anterioridad
     mostrar_menu()
     opcion = int(input("Elige una opción: "))
 
@@ -148,6 +191,7 @@ while (inicio):
         
     elif opcion == 4:
         print("Saliendo del programa...")
+        guardar_datos()
         inicio = False
     else:
         print("Opción no válida.")
