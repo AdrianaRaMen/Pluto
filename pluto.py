@@ -20,7 +20,7 @@ def registrar_ingreso():
 
     ingreso = float(input("Dinero que se recibió: $"))
     if validar_cantidad(ingreso):
-        origen = input("Fuente de la que se obtuvo ese dinero: ")
+        origen = validar_texto(input("Fuente de la que se obtuvo ese dinero: "))
 
         # Registrar ingreso
         lista_ingresos.append(ingreso)
@@ -57,9 +57,9 @@ def calcular_dinero_disponible(total_ingresos, total_gastos):
 
 
 def mostrar_movimiento(cantidad, origen):
-    print("Movimiento: $", cantidad)
-    print("Origen: ", origen)
-    print("Dinero total: ", dinero_total)
+    print("Movimiento: ", formatear_dinero(cantidad))
+    print("Origen: ", str(origen).capitalize())
+    print("Dinero total: ", formatear_dinero(dinero_total))
     print()
 
 
@@ -67,7 +67,7 @@ def mostrar_historial():
     print("Total de ingresos: ", lista_ingresos)
     print("Total de gastos: ", matriz[0])
     print("Categorías de los gastos: ", matriz[1])
-    print("Dinero disponible: $", dinero_total)
+    print("Dinero disponible: ", formatear_dinero(dinero_total))
     print()
 
 
@@ -83,6 +83,9 @@ def validar_cantidad(cantidad):
 
 
 def validar_categoria(categoria):
+    # Quita los espacios y pasa la categoría a minúsculas
+    categoria = categoria.strip().lower()
+
     # Regresa la categoría si es una de las del programa; si no, "otros"
     if categoria == "comida":
         return categoria
@@ -118,18 +121,63 @@ def mostrar_menu():
     print("1. Registrar ingreso")
     print("2. Registrar gasto")
     print("3. Ver historial de movimientos")
-    print("4. Salir")
+    print("4. Buscar gastos por categoría")
+    print("5. Salir")
     print()
 
+
+# Funciones del Avance 9
+
+def validar_texto(texto):
+    # Quita los espacios y pasa el texto a minúsculas;
+    # si el texto queda vacío regresa "sin especificar"
+    texto = texto.strip()
+    if texto == "":
+        return "sin especificar"
+    else:
+        return texto.lower()
+
+
+def formatear_dinero(cantidad):
+    # Regresa la cantidad como texto con signo de pesos y dos decimales
+    return "$" + str(round(cantidad, 2))
+
+
+def buscar_gastos():
+    # Busca los gastos cuya categoría contenga el texto que escribe el usuario
+    busqueda = input("Categoría que quieres buscar: ").strip().lower()
+
+    if busqueda == "":
+        print("No escribiste nada para buscar.")
+        print()
+    else:
+        encontrados = 0
+        total = 0
+        for i in range(len(matriz[1])):
+            if busqueda in matriz[1][i]:
+                print(matriz[1][i].capitalize(), ": ", formatear_dinero(matriz[0][i]))
+                encontrados += 1
+                total += matriz[0][i]
+
+        if encontrados == 0:
+            print("No se encontraron gastos con esa categoría.")
+        else:
+            print("Gastos encontrados: ", encontrados)
+            print("Total gastado: ", formatear_dinero(total))
+        print()
+
+
 def guardar_datos():
-    dfGastos = pd.DataFrame({
+    diccionario_gastos = {
         "Gastos": matriz[0],
         "Categoría Gastos": matriz[1]
-    })
+    }
+    dfGastos = pd.DataFrame(diccionario_gastos)
 
-    dfIngresos = pd.DataFrame({
+    diccionario_ingresos = {
             "Ingresos": lista_ingresos,
-        })
+        }
+    dfIngresos = pd.DataFrame(diccionario_ingresos)
 
     print(dfGastos)
     print(dfIngresos)
@@ -188,8 +236,12 @@ while (inicio):
     elif opcion == 3:
         print("******* Historial de movimientos *******")
         mostrar_historial()
-        
+
     elif opcion == 4:
+        print("******* Buscar gastos *******")
+        buscar_gastos()
+        
+    elif opcion == 5:
         print("Saliendo del programa...")
         guardar_datos()
         inicio = False
