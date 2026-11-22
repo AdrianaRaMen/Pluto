@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+from funciones_archivos import abrir_archivo
 
 """Proyecto Pluto.
 
@@ -11,6 +12,10 @@ dinero_total = 0
 lista_ingresos = []
 lista_gastos = []
 lista_categoria_gastos = []
+
+# Avance 9: rutas de los archivos de texto
+RUTA_MOVIMIENTOS = "./datos/movimientos.txt"
+RUTA_RESUMEN = "./datos/resumen.txt"
 matriz = [ 
     lista_gastos, lista_categoria_gastos
 ]
@@ -25,6 +30,9 @@ def registrar_ingreso():
         # Registrar ingreso
         lista_ingresos.append(ingreso)
         dinero_total += ingreso
+
+        # Avance 9: guardar el ingreso en el archivo de movimientos
+        guardar_movimiento("ingreso", ingreso, origen)
         return ingreso, origen
     else:
         print("La cantidad debe ser mayor a cero, se tomará como $0.")
@@ -44,6 +52,9 @@ def registrar_gasto():
         matriz[1].append(categoria)
 
         dinero_total -= gasto
+
+        # Avance 9: guardar el gasto en el archivo de movimientos
+        guardar_movimiento("gasto", gasto, categoria)
         return gasto, categoria
            
     else:
@@ -69,6 +80,9 @@ def mostrar_historial():
     print("Categorías de los gastos: ", matriz[1])
     print("Dinero disponible: ", formatear_dinero(dinero_total))
     print()
+
+    # Avance 9: mostrar también lo que está guardado en el archivo
+    mostrar_movimientos_guardados()
 
 
 # Funciones del Avance 4
@@ -189,6 +203,8 @@ def guardar_datos():
 def cargar_datos():
     global lista_ingresos
     global matriz
+    # Avance 9: para poder actualizar el dinero total al cargar
+    global dinero_total
 
     if os.path.exists("historialGastos.csv") and os.path.exists("historialIngresos.csv"):
         dfGastos = pd.read_csv("historialGastos.csv", sep=",")
@@ -199,9 +215,95 @@ def cargar_datos():
         lista_ingresos = dfIngresos["Ingresos"].to_list()
         matriz[1] = dfGastos["Categoría Gastos"].to_list()
         matriz[0] = dfGastos["Gastos"].to_list()
+
+        # Avance 9: calcular el dinero total con lo que se cargó
+        dinero_total = calcular_dinero_disponible(sum(lista_ingresos), sum(matriz[0]))
     else:
         print("No se encontraron registros anteriores")
         print()
+
+
+# Funciones del Avance 9: manejo de archivos de texto
+
+def guardar_movimiento(tipo, cantidad, descripcion):
+    # Agrega el movimiento al final del archivo (modo append)
+    # Cada línea queda así: tipo,cantidad,descripcion
+    archivo = open(RUTA_MOVIMIENTOS, "at")
+    archivo.write(f"{tipo},{cantidad},{descripcion}\n")
+    archivo.close()
+
+
+def mostrar_movimientos_guardados():
+    # Lee el archivo de movimientos línea por línea
+    archivo = abrir_archivo(RUTA_MOVIMIENTOS)
+    contador = 0
+
+    print("Movimientos guardados en el archivo:")
+    for linea in archivo:
+        # Borrar salto de línea del final y espacios en blanco
+        linea = linea.strip("\n").strip()
+        if linea != "":
+            datos = linea.split(",")
+            tipo = datos[0]
+            cantidad = float(datos[1])
+            descripcion = datos[2]
+            print(tipo.capitalize(), ": ", formatear_dinero(cantidad), "(", descripcion, ")")
+            contador += 1
+
+    if contador == 0:
+        print("Todavía no hay movimientos guardados.")
+    print()
+
+    archivo.close()
+
+
+def categoria_mayor_gasto():
+    # Suma los gastos de cada categoría y regresa en la que se gastó más
+    categorias = ["comida", "transporte", "escuela", "salud",
+                  "entretenimiento", "vivienda", "gustos", "otros"]
+    mayor_categoria = "ninguna"
+    mayor_total = 0
+
+    for categoria in categorias:
+        total = 0
+        for i in range(len(matriz[1])):
+            if matriz[1][i] == categoria:
+                total += matriz[0][i]
+
+        if total > mayor_total:
+            mayor_total = total
+            mayor_categoria = categoria
+
+    return mayor_categoria
+
+
+def guardar_resumen():
+    # Escribe un resumen de las finanzas (modo escritura, reemplaza lo anterior)
+    total_ingresos = sum(lista_ingresos)
+    total_gastos = sum(matriz[0])
+    dinero_disponible = calcular_dinero_disponible(total_ingresos, total_gastos)
+
+    archivo = open(RUTA_RESUMEN, "wt")
+    archivo.write(f"Total de ingresos: {formatear_dinero(total_ingresos)}\n")
+    archivo.write(f"Total de gastos: {formatear_dinero(total_gastos)}\n")
+    archivo.write(f"Dinero disponible: {formatear_dinero(dinero_disponible)}\n")
+    archivo.write(f"Categoría con más gasto: {categoria_mayor_gasto()}\n")
+    archivo.close()
+
+    print("Se guardó el resumen en", RUTA_RESUMEN)
+
+
+def mostrar_resumen_anterior():
+    # Lee el resumen que se guardó la última vez que se usó el programa
+    archivo = abrir_archivo(RUTA_RESUMEN)
+    contenido = archivo.read()
+    archivo.close()
+
+    if contenido == "":
+        print("Todavía no hay un resumen guardado.")
+    else:
+        print("******* Resumen de la última vez *******")
+        print(contenido)
 
 # *******************************************************************
 # Inicio
@@ -214,6 +316,9 @@ inicio = True
 # Menú: el usuario elige una opción y el programa decide qué hacer
 
 cargar_datos()
+
+# Avance 9: mostrar el resumen guardado la última vez
+mostrar_resumen_anterior()
 
 while (inicio):
     #Función para guardar los datos ingresados con anterioridad
@@ -244,6 +349,8 @@ while (inicio):
     elif opcion == 5:
         print("Saliendo del programa...")
         guardar_datos()
+        # Avance 9: guardar el resumen en un archivo de texto
+        guardar_resumen()
         inicio = False
     else:
         print("Opción no válida.")
