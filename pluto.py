@@ -13,7 +13,7 @@ lista_ingresos = []
 lista_gastos = []
 lista_categoria_gastos = []
 
-# Avance 9: rutas de los archivos de texto
+# Avance 9 (rutas de los archivos de texto)
 RUTA_MOVIMIENTOS = "./datos/movimientos.txt"
 RUTA_RESUMEN = "./datos/resumen.txt"
 matriz = [ 
@@ -31,7 +31,7 @@ def registrar_ingreso():
         lista_ingresos.append(ingreso)
         dinero_total += ingreso
 
-        # Avance 9: guardar el ingreso en el archivo de movimientos
+        # Avance 9 (guardar el ingreso en el archivo de movimientos)
         guardar_movimiento("ingreso", ingreso, origen)
         return ingreso, origen
     else:
@@ -53,7 +53,7 @@ def registrar_gasto():
 
         dinero_total -= gasto
 
-        # Avance 9: guardar el gasto en el archivo de movimientos
+        # Avance 9 (guardar el gasto en el archivo de movimientos)
         guardar_movimiento("gasto", gasto, categoria)
         return gasto, categoria
            
@@ -81,7 +81,7 @@ def mostrar_historial():
     print("Dinero disponible: ", formatear_dinero(dinero_total))
     print()
 
-    # Avance 9: mostrar también lo que está guardado en el archivo
+    # Avance 9 (mostrar también lo que está guardado en el archivo)
     mostrar_movimientos_guardados()
 
 
@@ -140,7 +140,7 @@ def mostrar_menu():
     print()
 
 
-# Funciones del Avance 9
+# Funciones del Avance 8
 
 def validar_texto(texto):
     # Quita los espacios y pasa el texto a minúsculas;
@@ -203,7 +203,7 @@ def guardar_datos():
 def cargar_datos():
     global lista_ingresos
     global matriz
-    # Avance 9: para poder actualizar el dinero total al cargar
+    # Avance 9 (para actualizar el dinero total al cargar)
     global dinero_total
 
     if os.path.exists("historialGastos.csv") and os.path.exists("historialIngresos.csv"):
@@ -216,14 +216,14 @@ def cargar_datos():
         matriz[1] = dfGastos["Categoría Gastos"].to_list()
         matriz[0] = dfGastos["Gastos"].to_list()
 
-        # Avance 9: calcular el dinero total con lo que se cargó
+        # Avance 9 (calcular el dinero total con lo que se cargó)
         dinero_total = calcular_dinero_disponible(sum(lista_ingresos), sum(matriz[0]))
     else:
         print("No se encontraron registros anteriores")
         print()
 
 
-# Funciones del Avance 9: manejo de archivos de texto
+# Funciones del Avance 9
 
 def guardar_movimiento(tipo, cantidad, descripcion):
     # Agrega el movimiento al final del archivo (modo append)
@@ -317,7 +317,7 @@ inicio = True
 
 cargar_datos()
 
-# Avance 9: mostrar el resumen guardado la última vez
+# Avance 9 (mostrar el resumen guardado la última vez)
 mostrar_resumen_anterior()
 
 while (inicio):
@@ -349,7 +349,7 @@ while (inicio):
     elif opcion == 5:
         print("Saliendo del programa...")
         guardar_datos()
-        # Avance 9: guardar el resumen en un archivo de texto
+        # Avance 9 (guardar el resumen en un archivo de texto)
         guardar_resumen()
         inicio = False
     else:
